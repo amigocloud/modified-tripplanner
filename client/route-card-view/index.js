@@ -112,9 +112,12 @@ View.prototype.timeSavingsAndNoCostSavings = function() {
   return this.model.timeSavings() && !this.model.costSavings();
 };
 
-View.prototype.selectTrip = function() {
+View.prototype.selectRoute = function(e) {
+  e.preventDefault();
+  var el = this.el;
   console.log('selected!');
   clearTimeout();
+  el.addClass('route-selected');
   var itineration = JSON.parse(localStorage.getItem('itineration'));
   for (var i=0; i<itineration.length;i++) {
        var r3 = d3.selectAll(".iteration-"+i);
