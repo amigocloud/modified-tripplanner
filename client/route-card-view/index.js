@@ -18,8 +18,7 @@ var showMapView = require('map-view');
  */
 
 var View = module.exports = view(require('./template.html'), function(view, model) {
-/*
-  mouseenter(view.el, function() {
+  var mouseenter = function (view.el, function() {
       clearTimeout();
       var itineration = JSON.parse(localStorage.getItem('itineration'));
       for (var i=0; i<itineration.length;i++) {
@@ -57,9 +56,9 @@ var View = module.exports = view(require('./template.html'), function(view, mode
             }
 
       });
-  });
+  };
 
-  mouseleave(view.el, function() {
+  var mouseleave = function (view.el, function() {
        var itineration = JSON.parse(localStorage.getItem('itineration'));
        for (var i=0; i<itineration.length;i++) {
            if (i!=model.index){
@@ -89,7 +88,7 @@ var View = module.exports = view(require('./template.html'), function(view, mode
             setTimeout(function(){ element.node().parentNode.appendChild(layer_ordenados[i]); }, 500);
         }
 
-  }); */
+  };
 });
 
 View.prototype.calculator = function() {
@@ -116,75 +115,10 @@ View.prototype.selectRoute = function(e) {
   e.preventDefault();
   var el = this.el;
 
-  if (!$(el).hasClass('route-selected')) {
-    $(el).addClass('route-selected');
-    var itineration = JSON.parse(localStorage.getItem('itineration'));
-    for (var i=0; i<itineration.length;i++) {
-         var r3 = d3.selectAll(".iteration-"+i);
-         if (i!=this.model.index){
-              r3.transition().duration(500).style("stroke", "#E0E0E0");
-              r3.attr("data-show","0");
-
-            var rec2 = d3.selectAll(".circle-fade-"+i);
-            rec2.attr('class', 'leaflet-marker-icon leaflet-div-icon2 circle-fade-'+i+ ' leaflet-zoom-hide');
-         }else {
-              r3.attr("data-show","1");
-         }
-    }
-
-    var orden = 0;
-    d3.selectAll(".iteration-200").each(function(e){
-          var element = d3.select(this);
-          var parent = d3.select(element.node().parentNode);
-          parent.attr("class", "g-element");
-          parent.attr("data-orden", orden.toString());
-          if (Boolean(parseInt(element.attr("data-show")))) {
-              parent.attr("data-show", "1");
-          }else {
-              parent.attr("data-show", "0");
-          }
-
-          orden++;
-    });
-
-
-    d3.selectAll(".g-element").each(function(a,b){
-          if (Boolean(parseInt(d3.select(this).attr("data-show")))) {
-              d3.select(this).node().parentNode.appendChild(this);
-          }
-
-    });
-  } else {
-    $(el).parent().find('.RouteCard').removeClass('route-selected');
-    var itineration = JSON.parse(localStorage.getItem('itineration'));
-   for (var i=0; i<itineration.length;i++) {
-       if (i!=this.model.index){
-          var rec2 = d3.selectAll(".circle-fade-"+i);
-          rec2.attr('class', 'leaflet-marker-icon leaflet-div-icon1 circle-fade-'+i+ ' leaflet-zoom-hide');
-       }
-   }
-
-
-    var layer_ordenados = [];
-    d3.selectAll(".g-element").each(function(a,b){
-        var orden = parseInt(d3.select(this).attr("data-orden"));
-        layer_ordenados[orden] = this;
-
-    });
-
-    for (i in layer_ordenados) {
-        var element = d3.select(layer_ordenados[i]);
-        var child = element.select("path");
-        element.attr("data-show", "0");
-
-        child.transition().duration(500).style("stroke",function(i,v){
-                return d3.select(this).attr("stroke");
-
-        });
-        child.attr("data-show", "0");
-        setTimeout(function(){ element.node().parentNode.appendChild(layer_ordenados[i]); }, 500);
-    }
-  }
+  this.mouseleave(el);
+  $(el).parent().find('.RouteCard').removeClass('route-selected');
+  $(el).addClass('route-selected');
+  this.mouseenter(el);
 };
 
 /**
