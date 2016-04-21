@@ -155,10 +155,10 @@ View.prototype.selectRoute = function(e) {
 
     });
   } else {
-    $(el).removeClass('route-selected');
+    $(el).parent().find('.RouteCard').removeClass('route-selected');
     var itineration = JSON.parse(localStorage.getItem('itineration'));
    for (var i=0; i<itineration.length;i++) {
-       if (i!=model.index){
+       if (i!=this.model.index){
           var rec2 = d3.selectAll(".circle-fade-"+i);
           rec2.attr('class', 'leaflet-marker-icon leaflet-div-icon1 circle-fade-'+i+ ' leaflet-zoom-hide');
        }
