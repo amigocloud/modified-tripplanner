@@ -118,7 +118,7 @@ View.prototype.selectTrip = function() {
   var itineration = JSON.parse(localStorage.getItem('itineration'));
   for (var i=0; i<itineration.length;i++) {
        var r3 = d3.selectAll(".iteration-"+i);
-       if (i!=model.index){
+       if (i!=this.model.index){
             r3.transition().duration(500).style("stroke", "#E0E0E0");
             r3.attr("data-show","0");
 
