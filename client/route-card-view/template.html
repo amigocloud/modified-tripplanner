@@ -1,4 +1,4 @@
-<li class="RouteCard">
+<li class="RouteCard" on-tap="selectRoute">
   <div class="benefits-badge savings" data-visible="costSavings">Save <strong>${costSavings}</strong></div>
   <div class="benefits-badge time-savings" data-visible="timeSavingsAndNoCostSavings">Gain <strong>{timeSavings}</strong> hour(s)</div>
 
@@ -23,7 +23,7 @@
       </div>
     </div>
 
-   <button class="btn btn-default select-button" on-tap="selectRoute">select</button>
+<!--    <button class="btn btn-default select-button" on-tap="selectOption">select</button> -->
 
     <div class="details-buttons">
       <button class="btn btn-sm btn-dark show-hide show-details" href="#" on-tap="showDetails"><i class="fa fa-fw fa-plus-circle"></i> details</button>

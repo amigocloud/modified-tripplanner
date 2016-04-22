@@ -109,8 +109,8 @@ View.prototype.timeSavingsAndNoCostSavings = function () {
 };
 
 View.prototype.selectRoute = function (e) {
-    var el = $(e.target).parent('li'),
-    routes = $(el).parent('ul').find('li');
+    var el = $(e.target).closest('li'),
+    routes = $(el).closest('ul').find('li');
     e.preventDefault();
 
     if ($(routes).hasClass('route-selected')) {
