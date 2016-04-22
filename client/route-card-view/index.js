@@ -18,7 +18,6 @@ var showMapView = require('map-view');
  */
 
 var View = module.exports = view(require('./template.html'), function(view, model) {
-  view.prevSelected = null;
   view.mouseenter = function() {
     clearTimeout();
     var itineration = JSON.parse(localStorage.getItem('itineration'));
@@ -113,18 +112,15 @@ View.prototype.selectRoute = function(e) {
   var el = e.target;
   e.preventDefault();
 
-  $(el).parent().find('.RouteCard').removeClass('route-selected');
-  $(el).addClass('route-selected');
-
-  if (this.prevSelected !== el) {
+  if (!$(el).hasClass('route-selected')) {
+    $(el).parent().find('.RouteCard').removeClass('route-selected');
+    $(el).addClass('route-selected');
     this.mouseleave();
     this.mouseenter();
   } else {
+    $(el).parent().find('.RouteCard').removeClass('route-selected');
     this.mouseleave();
-    this.prevSelected = null;
   }
-
-  this.prevSelected = el;
 };
 
 /**
