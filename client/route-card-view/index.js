@@ -18,7 +18,8 @@ var showMapView = require('map-view');
  */
 
 var View = module.exports = view(require('./template.html'), function (view, model) {
-    view.mouseenter = function () {
+    view.isSelected = false;
+    mouseenter(view.el, function () {
         clearTimeout();
         var itineration = JSON.parse(localStorage.getItem('itineration'));
         for (var i = 0; i < itineration.length; i++) {
@@ -55,9 +56,13 @@ var View = module.exports = view(require('./template.html'), function (view, mod
                 d3.select(this).node().parentNode.appendChild(this);
             }
         });
-    };
+    });
 
-    view.mouseleave = function () {
+    mouseleave(view.el, function () {
+        if (this.isSelected) {
+            return;
+        }
+
         var itineration = JSON.parse(localStorage.getItem('itineration'));
         for (var i = 0; i < itineration.length; i++) {
             var rec2 = d3.selectAll(".circle-fade-" + i);
@@ -85,7 +90,7 @@ var View = module.exports = view(require('./template.html'), function (view, mod
                 element.node().parentNode.appendChild(layer_ordenados[i]);
             }, 500);
         }
-    };
+    });
 });
 
 View.prototype.calculator = function () {
@@ -148,6 +153,8 @@ View.prototype.showDetails = function (e) {
 
     var scrollable = document.querySelector('.scrollable');
     scrollable.scrollTop = el.offsetTop - 52;
+
+    this.isSelected = true;
 };
 
 View.prototype.hideDetails = function (e) {
@@ -156,6 +163,8 @@ View.prototype.hideDetails = function (e) {
     if (list.contains('expanded')) {
         list.remove('expanded');
     }
+
+    this.isSelected = false;
 };
 
 /**
