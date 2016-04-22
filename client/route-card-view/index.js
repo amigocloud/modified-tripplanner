@@ -113,21 +113,16 @@ View.prototype.selectRoute = function (e) {
     routes = $(el).parent('ul').find('li');
     e.preventDefault();
 
-    for (var r in routes) {
-        console.log('outside');
-        if (routes[r] !== el && $(routes[r]).hasClass('route-selected')) {
-            routes[r].click();
-            console.log('other selected');
-        }
+    if ($(routes).hasClass('route-selected')) {
+        this.mouseleave();
     }
 
-    if (!$(el).hasClass('route-selected')) {
-        $(el).addClass('route-selected');
-        this.mouseleave();
-        this.mouseenter();
-    } else {
+    if ($(el).hasClass('route-selected')) {
         $(el).removeClass('route-selected');
-        this.mouseleave();
+    } else {
+        $(routes).removeClass('route-selected');
+        $(el).addClass('route-selected');
+        this.mouseenter();
     }
 };
 
