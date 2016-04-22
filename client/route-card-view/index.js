@@ -113,12 +113,10 @@ View.prototype.selectRoute = function(e) {
   e.preventDefault();
 
   if (!$(el).hasClass('route-selected')) {
-    $(el).parent().find('.RouteCard').removeClass('route-selected');
     $(el).addClass('route-selected');
-    this.mouseleave();
     this.mouseenter();
   } else {
-    $(el).parent().find('.RouteCard').removeClass('route-selected');
+    $(el).removeClass('route-selected');
     this.mouseleave();
   }
 };
