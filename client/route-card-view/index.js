@@ -109,7 +109,7 @@ View.prototype.timeSavingsAndNoCostSavings = function () {
 };
 
 View.prototype.selectRoute = function (e) {
-    var el = $(e.target).parent('.RouteCard');
+    var el = $(e.target).parent('li');
     e.preventDefault();
 
     if (!$(el).hasClass('route-selected')) {
