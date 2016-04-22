@@ -31,7 +31,6 @@ var View = module.exports = view(require('./template.html'), function (view, mod
                 rec2.attr('class', 'leaflet-marker-icon leaflet-div-icon2 circle-fade-' + i + ' leaflet-zoom-hide');
             } else {
                 r3.attr("data-show", "1");
-                rec2.attr('class', 'leaflet-marker-icon leaflet-div-icon1 circle-fade-' + i + ' leaflet-zoom-hide');
             }
         }
 
@@ -64,8 +63,6 @@ var View = module.exports = view(require('./template.html'), function (view, mod
             if (i != model.index) {
                 var rec2 = d3.selectAll(".circle-fade-" + i);
                 rec2.attr('class', 'leaflet-marker-icon leaflet-div-icon1 circle-fade-' + i + ' leaflet-zoom-hide');
-            } else {
-                rec2.attr('class', 'leaflet-marker-icon leaflet-div-icon2 circle-fade-' + i + ' leaflet-zoom-hide');
             }
         }
 
