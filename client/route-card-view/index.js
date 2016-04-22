@@ -17,182 +17,187 @@ var showMapView = require('map-view');
  * Expose `View`
  */
 
-var View = module.exports = view(require('./template.html'), function(view, model) {
-  view.mouseenter = function() {
-    clearTimeout();
-    var itineration = JSON.parse(localStorage.getItem('itineration'));
-    for (var i=0; i<itineration.length;i++) {
-         var r3 = d3.selectAll(".iteration-"+i);
-         if (i!=model.index){
-              r3.transition().duration(500).style("stroke", "#E0E0E0");
-              r3.attr("data-show","0");
+var View = module.exports = view(require('./template.html'), function (view, model) {
+    view.mouseenter = function () {
+        clearTimeout();
+        var itineration = JSON.parse(localStorage.getItem('itineration'));
+        for (var i = 0; i < itineration.length; i++) {
+            var r3 = d3.selectAll(".iteration-" + i);
+            if (i != model.index) {
+                r3.transition().duration(500).style("stroke", "#E0E0E0");
+                r3.attr("data-show", "0");
 
-            var rec2 = d3.selectAll(".circle-fade-"+i);
-            rec2.attr('class', 'leaflet-marker-icon leaflet-div-icon2 circle-fade-'+i+ ' leaflet-zoom-hide');
-         }else {
-              r3.attr("data-show","1");
-         }
-    }
+                var rec2 = d3.selectAll(".circle-fade-" + i);
+                rec2.attr('class', 'leaflet-marker-icon leaflet-div-icon2 circle-fade-' + i + ' leaflet-zoom-hide');
+            } else {
+                r3.attr("data-show", "1");
+                rec2.attr('class', 'leaflet-marker-icon leaflet-div-icon1 circle-fade-' + i + ' leaflet-zoom-hide');
+            }
+        }
 
-    var orden = 0;
-    d3.selectAll(".iteration-200").each(function(e){
-          var element = d3.select(this);
-          var parent = d3.select(element.node().parentNode);
-          parent.attr("class", "g-element");
-          parent.attr("data-orden", orden.toString());
-          if (Boolean(parseInt(element.attr("data-show")))) {
-              parent.attr("data-show", "1");
-          }else {
-              parent.attr("data-show", "0");
-          }
+        var orden = 0;
+        d3.selectAll(".iteration-200").each(function (e) {
+            var element = d3.select(this);
+            var parent = d3.select(element.node().parentNode);
+            parent.attr("class", "g-element");
+            parent.attr("data-orden", orden.toString());
+            if (Boolean(parseInt(element.attr("data-show")))) {
+                parent.attr("data-show", "1");
+            } else {
+                parent.attr("data-show", "0");
+            }
 
-          orden++;
-    });
+            orden++;
+        });
 
 
-    d3.selectAll(".g-element").each(function(a,b){
-          if (Boolean(parseInt(d3.select(this).attr("data-show")))) {
-              d3.select(this).node().parentNode.appendChild(this);
-          }
-    });
-  };
+        d3.selectAll(".g-element").each(function (a, b) {
+            if (Boolean(parseInt(d3.select(this).attr("data-show")))) {
+                d3.select(this).node().parentNode.appendChild(this);
+            }
+        });
+    };
 
-  view.mouseleave = function() {
-    var itineration = JSON.parse(localStorage.getItem('itineration'));
-    for (var i=0; i<itineration.length;i++) {
-       if (i!=model.index){
-          var rec2 = d3.selectAll(".circle-fade-"+i);
-          rec2.attr('class', 'leaflet-marker-icon leaflet-div-icon1 circle-fade-'+i+ ' leaflet-zoom-hide');
-       }
-    }
+    view.mouseleave = function () {
+        var itineration = JSON.parse(localStorage.getItem('itineration'));
+        for (var i = 0; i < itineration.length; i++) {
+            if (i != model.index) {
+                var rec2 = d3.selectAll(".circle-fade-" + i);
+                rec2.attr('class', 'leaflet-marker-icon leaflet-div-icon1 circle-fade-' + i + ' leaflet-zoom-hide');
+            } else {
+                rec2.attr('class', 'leaflet-marker-icon leaflet-div-icon2 circle-fade-' + i + ' leaflet-zoom-hide');
+            }
+        }
 
-    var layer_ordenados = [];
-    d3.selectAll(".g-element").each(function(a,b){
-        var orden = parseInt(d3.select(this).attr("data-orden"));
-        layer_ordenados[orden] = this;
-
-    });
-
-    for (i in layer_ordenados) {
-        var element = d3.select(layer_ordenados[i]);
-        var child = element.select("path");
-        element.attr("data-show", "1");
-
-        child.transition().duration(500).style("stroke",function(i,v){
-                return d3.select(this).attr("stroke");
+        var layer_ordenados = [];
+        d3.selectAll(".g-element").each(function (a, b) {
+            var orden = parseInt(d3.select(this).attr("data-orden"));
+            layer_ordenados[orden] = this;
 
         });
-        child.attr("data-show", "1");
-        setTimeout(function(){ element.node().parentNode.appendChild(layer_ordenados[i]); }, 500);
-    }
-  };
+
+        for (i in layer_ordenados) {
+            var element = d3.select(layer_ordenados[i]);
+            var child = element.select("path");
+            element.attr("data-show", "1");
+
+            child.transition().duration(500).style("stroke", function (i, v) {
+                return d3.select(this).attr("stroke");
+
+            });
+            child.attr("data-show", "1");
+            setTimeout(function () {
+                element.node().parentNode.appendChild(layer_ordenados[i]);
+            }, 500);
+        }
+    };
 });
 
-View.prototype.calculator = function() {
-  return new Calculator(this.model);
+View.prototype.calculator = function () {
+    return new Calculator(this.model);
 };
 
-View.prototype.directions = function() {
-  return new RouteDirections(this.model);
+View.prototype.directions = function () {
+    return new RouteDirections(this.model);
 };
 
-View.prototype.segments = function() {
-  return routeSummarySegments(this.model);
+View.prototype.segments = function () {
+    return routeSummarySegments(this.model);
 };
 
-View.prototype.costSavings = function() {
-  return convert.roundNumberToString(this.model.costSavings());
+View.prototype.costSavings = function () {
+    return convert.roundNumberToString(this.model.costSavings());
 };
 
-View.prototype.timeSavingsAndNoCostSavings = function() {
-  return this.model.timeSavings() && !this.model.costSavings();
+View.prototype.timeSavingsAndNoCostSavings = function () {
+    return this.model.timeSavings() && !this.model.costSavings();
 };
 
-View.prototype.selectRoute = function(e) {
-  var el = e.target;
-  e.preventDefault();
+View.prototype.selectRoute = function (e) {
+    var el = e.target;
+    e.preventDefault();
 
-  if (!$(el).hasClass('route-selected')) {
-    $(el).addClass('route-selected');
-    this.mouseenter();
-  } else {
-    $(el).removeClass('route-selected');
-    this.mouseleave();
-  }
+    if (!$(el).hasClass('route-selected')) {
+        $(el).addClass('route-selected');
+        this.mouseenter();
+    } else {
+        $(el).removeClass('route-selected');
+        this.mouseleave();
+    }
 };
 
 /**
  * Show/hide
  */
 
-View.prototype.showDetails = function(e) {
-  e.preventDefault();
-  var el = this.el;
-  var expanded = document.querySelector('.option.expanded');
-  if (expanded) expanded.classList.remove('expanded');
+View.prototype.showDetails = function (e) {
+    e.preventDefault();
+    var el = this.el;
+    var expanded = document.querySelector('.option.expanded');
+    if (expanded) expanded.classList.remove('expanded');
 
-  el.classList.add('expanded');
+    el.classList.add('expanded');
 
-  analytics.track('Expanded Route Details', {
-    plan: session.plan().generateQuery(),
-    route: {
-      modes: this.model.modes(),
-      summary: this.model.summary()
-    }
-  });
+    analytics.track('Expanded Route Details', {
+        plan: session.plan().generateQuery(),
+        route: {
+            modes: this.model.modes(),
+            summary: this.model.summary()
+        }
+    });
 
-  var scrollable = document.querySelector('.scrollable');
-  scrollable.scrollTop = el.offsetTop - 52;
+    var scrollable = document.querySelector('.scrollable');
+    scrollable.scrollTop = el.offsetTop - 52;
 };
 
-View.prototype.hideDetails = function(e) {
-  e.preventDefault();
-  var list = this.el.classList;
-  if (list.contains('expanded')) {
-    list.remove('expanded');
-  }
+View.prototype.hideDetails = function (e) {
+    e.preventDefault();
+    var list = this.el.classList;
+    if (list.contains('expanded')) {
+        list.remove('expanded');
+    }
 };
 
 /**
  * Get the option number for display purposes (1-based)
  */
 
-View.prototype.optionNumber = function() {
-  return this.model.index + 1;
+View.prototype.optionNumber = function () {
+    return this.model.index + 1;
 };
 
 /**
  * View
  */
 
-View.prototype.feedback = function(e) {
-  e.preventDefault();
-  Feedback(this.model).show();
+View.prototype.feedback = function (e) {
+    e.preventDefault();
+    Feedback(this.model).show();
 };
 
 /**
  * Select this option
  */
 
-View.prototype.selectOption = function() {
-  var route = this.model;
-  var plan = session.plan();
-  var tags = route.tags(plan);
+View.prototype.selectOption = function () {
+    var route = this.model;
+    var plan = session.plan();
+    var tags = route.tags(plan);
 
-  analytics.send_ga({
-    category: 'route-card',
-    action: 'select route',
-    label: JSON.stringify(tags),
-    value: 1
-  });
-  routeResource.findByTags(tags, function(err, resources) {
-    var routeModal = new RouteModal(route, null, {
-      context: 'route-card',
-      resources: resources
+    analytics.send_ga({
+        category: 'route-card',
+        action: 'select route',
+        label: JSON.stringify(tags),
+        value: 1
     });
-    routeModal.show();
-    routeModal.on('next', function() {
-      routeModal.hide();
+    routeResource.findByTags(tags, function (err, resources) {
+        var routeModal = new RouteModal(route, null, {
+            context: 'route-card',
+            resources: resources
+        });
+        routeModal.show();
+        routeModal.on('next', function () {
+            routeModal.hide();
+        });
     });
-  });
 };
