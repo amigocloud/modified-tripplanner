@@ -114,6 +114,7 @@ View.prototype.selectRoute = function (e) {
     e.preventDefault();
 
     for (var r in routes) {
+        console.log('outside');
         if (routes[r] !== el && $(routes[r]).hasClass('route-selected')) {
             routes[r].click();
             console.log('other selected');
