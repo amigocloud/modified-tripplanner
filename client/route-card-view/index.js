@@ -60,10 +60,8 @@ var View = module.exports = view(require('./template.html'), function (view, mod
     view.mouseleave = function () {
         var itineration = JSON.parse(localStorage.getItem('itineration'));
         for (var i = 0; i < itineration.length; i++) {
-            if (i != model.index) {
-                var rec2 = d3.selectAll(".circle-fade-" + i);
-                rec2.attr('class', 'leaflet-marker-icon leaflet-div-icon1 circle-fade-' + i + ' leaflet-zoom-hide');
-            }
+            var rec2 = d3.selectAll(".circle-fade-" + i);
+            rec2.attr('class', 'leaflet-marker-icon leaflet-div-icon1 circle-fade-' + i + ' leaflet-zoom-hide');
         }
 
         var layer_ordenados = [];
@@ -116,6 +114,7 @@ View.prototype.selectRoute = function (e) {
 
     if (!$(el).hasClass('route-selected')) {
         $(el).addClass('route-selected');
+        this.mouseleave();
         this.mouseenter();
     } else {
         $(el).removeClass('route-selected');
