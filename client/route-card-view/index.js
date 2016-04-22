@@ -114,8 +114,9 @@ View.prototype.selectRoute = function (e) {
     e.preventDefault();
 
     for (var r in routes) {
-        if (routes[r] !== el && routes[r].hasClass('route-selected')) {
+        if (routes[r] !== el && $(routes[r]).hasClass('route-selected')) {
             routes[r].click();
+            console.log('other selected');
         }
     }
 
