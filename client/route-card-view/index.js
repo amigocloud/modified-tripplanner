@@ -18,8 +18,8 @@ var showMapView = require('map-view');
  */
 
 var View = module.exports = view(require('./template.html'), function(view, model) {
-  this.prevSelected = null;
-  this.mouseenter = function() {
+  view.prevSelected = null;
+  view.mouseenter = function() {
     clearTimeout();
     var itineration = JSON.parse(localStorage.getItem('itineration'));
     for (var i=0; i<itineration.length;i++) {
@@ -58,7 +58,7 @@ var View = module.exports = view(require('./template.html'), function(view, mode
     });
   };
 
-  this.mouseleave = function() {
+  view.mouseleave = function() {
     var itineration = JSON.parse(localStorage.getItem('itineration'));
     for (var i=0; i<itineration.length;i++) {
        if (i!=model.index){
