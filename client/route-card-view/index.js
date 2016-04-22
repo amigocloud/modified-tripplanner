@@ -19,7 +19,7 @@ var showMapView = require('map-view');
 
 var View = module.exports = view(require('./template.html'), function(view, model) {
   var prevSelected = null;
-  var mouseenter = function (view.el, function() {
+  var mouseenter = function() {
       clearTimeout();
       var itineration = JSON.parse(localStorage.getItem('itineration'));
       for (var i=0; i<itineration.length;i++) {
@@ -59,7 +59,7 @@ var View = module.exports = view(require('./template.html'), function(view, mode
       });
   };
 
-  var mouseleave = function (view.el, function() {
+  var mouseleave = function() {
        var itineration = JSON.parse(localStorage.getItem('itineration'));
        for (var i=0; i<itineration.length;i++) {
            if (i!=model.index){
@@ -114,16 +114,13 @@ View.prototype.timeSavingsAndNoCostSavings = function() {
 
 View.prototype.selectRoute = function(e) {
   e.preventDefault();
-  var el = this.el;
-
-  if (this.prevSelected === el) {
-    this.mouseleave(this.prevSelected);
-  }
+  console.log(e);
+  var el = e.target;
 
   $(el).parents().find('ul').find('.RouteCard').removeClass('route-selected');
   $(el).addClass('route-selected');
-  this.mouseenter(el);
-  this.prevSelected = el;
+  this.mouseleave();
+  this.mouseenter();
 };
 
 /**
