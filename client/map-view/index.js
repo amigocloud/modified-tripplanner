@@ -387,7 +387,7 @@ module.exports.drawRouteStops = function () {
 
 };
 
-module.exports.loadRouteStops = function (legs) {
+module.exports.mapRouteStops = function (legs) {
     for (var i = 0; i < legs.length; i++) {
         if (legs[i].mode === 'BUS') {
             module.exports.loadRouteStops(legs[i].routeId);
