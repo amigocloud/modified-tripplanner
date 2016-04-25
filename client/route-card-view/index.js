@@ -167,6 +167,7 @@ View.prototype.hideDetails = function (e) {
     }
 
     this.isSelected = false;
+    mapView.removeRouteStops();
 };
 
 /**

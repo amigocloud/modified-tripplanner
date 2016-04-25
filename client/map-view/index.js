@@ -411,12 +411,16 @@ module.exports.drawRouteStops = function (routeId, stops) {
     stopsGroup.addTo(this.activeMap);
 };
 
-module.exports.mapRouteStops = function (legs) {
+module.exports.removeRouteStops = function () {
     for (var r in this.addedRouteStops) {
         this.activeMap.removeLayer(this.addedRouteStops[r]);
     }
 
     this.addedRouteStops = {};
+};
+
+module.exports.mapRouteStops = function (legs) {
+    module.exports.removeRouteStops();
 
     for (var i = 0; i < legs.length; i++) {
         if (legs[i].mode === 'BUS') {
