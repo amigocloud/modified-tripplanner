@@ -137,6 +137,7 @@ View.prototype.selectRoute = function (e) {
 
 View.prototype.showDetails = function (e) {
     e.preventDefault();
+    mapView.removeRouteStops();
     var el = this.el;
     var expanded = document.querySelector('.option.expanded');
     if (expanded) expanded.classList.remove('expanded');
