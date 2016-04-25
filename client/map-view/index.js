@@ -90,7 +90,7 @@ module.exports.makerpoint_creadas = [];
 module.exports.collision_group = {};
 module.exports.marker_collision_group = [];
 module.exports.last_marker_collision_group = [];
-module.exports.addedRouteStops = {};
+module.exports.addedRouteStops = [];
 
 module.exports.drawMakerCollision = function () {
     var collision_group = L.layerGroup.collision();
@@ -407,7 +407,7 @@ module.exports.drawRouteStops = function (routeId, stops) {
         marker.addTo(stopsGroup);
     }
 
-    this.addedRouteStops[routeId] = stopsGroup;
+    this.addedRouteStops.push(stopsGroup);
     stopsGroup.addTo(this.activeMap);
 };
 
@@ -416,7 +416,7 @@ module.exports.removeRouteStops = function () {
         this.activeMap.removeLayer(this.addedRouteStops[r]);
     }
 
-    this.addedRouteStops = {};
+    this.addedRouteStops = [];
 };
 
 module.exports.mapRouteStops = function (legs) {
