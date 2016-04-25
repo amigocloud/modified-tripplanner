@@ -291,7 +291,7 @@ module.exports.marker_map_point = function (to, map, itineration) {
             html: html
         }),
         interactive: false,
-        clickable: true
+        clickable: false
     });
 
     if (this.marker_collision_group[itineration] === undefined) {
@@ -300,18 +300,6 @@ module.exports.marker_map_point = function (to, map, itineration) {
     } else {
         this.marker_collision_group[itineration].push(marker);
     }
-};
-
-module.exports.makeStopPupup = function (marker) {
-    string = '<div class="stop-popup">' +
-        '<div class="popup-header"><h5><i class="fa fa-bus"></i> stop content!!! 🦁';
-    string += '</h5></div>';
-    string += '<div class="popup-body">';
-    string += 'pop up content';
-    string += '</div>';
-    string += '</div>';
-
-    return string;
 };
 
 module.exports.drawRouteAmigo = function (legs, mode, itineration) {
@@ -383,8 +371,41 @@ module.exports.drawRouteAmigo = function (legs, mode, itineration) {
     route.addTo(this.activeMap);
 };
 
-module.exports.drawRouteStops = function () {
+module.exports.makeStopPupup = function (marker) {
+    string = '<div class="stop-popup">' +
+        '<div class="popup-header"><h5><i class="fa fa-bus"></i> stop content!!! 🦁';
+    string += '</h5></div>';
+    string += '<div class="popup-body">';
+    string += 'pop up content';
+    string += '</div>';
+    string += '</div>';
 
+    return string;
+};
+
+module.exports.drawRouteStops = function (stops) {
+    var stopsGroup = L.featureGroup();
+    for (var i = 0; i < stops.length; i++) {
+        var class_name = 'leaflet-div-icon1 circle-fade-0';
+        var html = "<span class='leaflet-label'>" + stops[i].name + "</span>";
+
+        var marker = L.marker({
+            "lat": stops[i].lat,
+            "lng": stops[i].lon
+        }, {
+            icon: L.divIcon({
+                className: class_name,
+                iconSize: [15, 15],
+                iconAnchor: [0, 0],
+                html: html
+            }),
+            interactive: false,
+            clickable: false
+        });
+
+        marker.addTo(stopsGroup);
+    }
+    stopsGroup.addTo(this.activeMap);
 };
 
 module.exports.mapRouteStops = function (legs) {
@@ -402,6 +423,6 @@ module.exports.loadRouteStops = function (routeId) {
         r: routeId,
         format: 'json'
     }).done(function (data) {
-        console.log(data);
+        module.exports.drawRouteStops(data.routes[0].direactions[0].stops);
     });
 };
