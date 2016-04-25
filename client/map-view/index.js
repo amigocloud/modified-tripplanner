@@ -90,6 +90,7 @@ module.exports.makerpoint_creadas = [];
 module.exports.collision_group = {};
 module.exports.marker_collision_group = [];
 module.exports.last_marker_collision_group = [];
+module.exports.addedRouteStops = {};
 
 module.exports.drawMakerCollision = function () {
     var collision_group = L.layerGroup.collision();
@@ -383,7 +384,7 @@ module.exports.makeStopPupup = function (marker) {
     return string;
 };
 
-module.exports.drawRouteStops = function (stops) {
+module.exports.drawRouteStops = function (routeId, stops) {
     var stopsGroup = L.featureGroup();
     for (var i = 0; i < stops.length; i++) {
         var class_name = 'leaflet-div-icon1 circle-fade-0';
@@ -405,10 +406,18 @@ module.exports.drawRouteStops = function (stops) {
 
         marker.addTo(stopsGroup);
     }
+
+    this.addedRouteStops[routeId] = stopsGroup;
     stopsGroup.addTo(this.activeMap);
 };
 
 module.exports.mapRouteStops = function (legs) {
+    for (var r in this.addedRouteStops) {
+        this.addedRouteStops[r].removeFrom(this.activeMap);
+    }
+
+    this.addedRouteStops = {};
+
     for (var i = 0; i < legs.length; i++) {
         if (legs[i].mode === 'BUS') {
             module.exports.loadRouteStops(legs[i].routeId);
@@ -423,6 +432,6 @@ module.exports.loadRouteStops = function (routeId) {
         r: routeId,
         format: 'json'
     }).done(function (data) {
-        module.exports.drawRouteStops(data.routes[0].directions[0].stops);
+        module.exports.drawRouteStops(routeId, data.routes[0].directions[0].stops);
     });
 };
