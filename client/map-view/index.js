@@ -388,7 +388,6 @@ module.exports.drawRouteStops = function (routeId, stops) {
     var stopsGroup = L.featureGroup();
     for (var i = 0; i < stops.length; i++) {
         var class_name = 'leaflet-div-icon1 circle-fade-0';
-        var html = "<span class='leaflet-label'>" + stops[i].name + "</span>";
 
         var marker = L.marker({
             "lat": stops[i].lat,
@@ -397,8 +396,7 @@ module.exports.drawRouteStops = function (routeId, stops) {
             icon: L.divIcon({
                 className: class_name,
                 iconSize: [15, 15],
-                iconAnchor: [0, 0],
-                html: html
+                iconAnchor: [0, 0]
             }),
             interactive: false,
             clickable: false
