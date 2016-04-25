@@ -290,7 +290,7 @@ module.exports.marker_map_point = function(to, map, itineration){
                     html:html
 				})
 				,interactive: false
-				,clickable:   false
+				,clickable:   true
 				});
 
     marker.bindPopup(module.exports.makeStopPupup());
