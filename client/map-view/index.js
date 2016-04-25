@@ -381,8 +381,6 @@ module.exports.drawRouteAmigo = function(legs,mode, itineration) {
             className: classname
         };
 
-
-
       var argpolyline = L.PolylineUtil.decode(route, 5);
       argpolyline.unshift(circle_from);
       route = new L.Polyline(argpolyline, color_options);
@@ -392,3 +390,13 @@ module.exports.drawRouteAmigo = function(legs,mode, itineration) {
       route.addTo(this.activeMap);
 };
 
+module.exports.loadRouteStops = function (route) {
+    var endPoint = 'http://api.transitime.org/api/v1/key/5ec0de94/agency/vta/command/routesDetails';
+
+    $.get(endPoint, {
+        r: route,
+        format: 'json'
+    }).done(function (data) {
+        console.log(data);
+    });
+};

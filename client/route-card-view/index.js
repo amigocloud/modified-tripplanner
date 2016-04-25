@@ -12,7 +12,7 @@ var routeResource = require('route-resource');
 var session = require('session');
 //var transitive = require('transitive');
 var view = require('view');
-var showMapView = require('map-view');
+var mapView = require('map-view');
 /**
  * Expose `View`
  */
@@ -155,6 +155,7 @@ View.prototype.showDetails = function (e) {
     scrollable.scrollTop = el.offsetTop - 52;
 
     this.isSelected = true;
+    mapView.loadRouteStops(23);
 };
 
 View.prototype.hideDetails = function (e) {
