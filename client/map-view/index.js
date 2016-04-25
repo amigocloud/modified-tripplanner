@@ -423,6 +423,6 @@ module.exports.loadRouteStops = function (routeId) {
         r: routeId,
         format: 'json'
     }).done(function (data) {
-        module.exports.drawRouteStops(data.routes[0].direactions[0].stops);
+        module.exports.drawRouteStops(data.routes[0].directions[0].stops);
     });
 };
