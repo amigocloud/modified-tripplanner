@@ -59,7 +59,7 @@ var View = module.exports = view(require('./template.html'), function (view, mod
     });
 
     mouseleave(view.el, function () {
-        if (this.isSelected) {
+        if (view.isSelected) {
             return;
         }
 

@@ -293,6 +293,7 @@ module.exports.marker_map_point = function(to, map, itineration){
 				,clickable:   false
 				});
 
+    marker.bindPopup(module.exports.makeStopPupup());
 
     if (this.marker_collision_group[itineration] === undefined){
         this.marker_collision_group[itineration] = [];
@@ -303,6 +304,17 @@ module.exports.marker_map_point = function(to, map, itineration){
 };
 
 
+module.exports.makeStopPupup = function () {
+    string  =  '<div class="stop-popup">' +
+        '<div class="popup-header"><h5><i class="fa fa-bus"></i> stop content!!! 🦁';
+    string += '</h5></div>';
+    string += '<div class="popup-body">';
+    string += 'pop up content';
+    string += '</div>';
+    string += '</div>';
+
+    return string;
+};
 
 module.exports.drawRouteAmigo = function(legs,mode, itineration) {
 
