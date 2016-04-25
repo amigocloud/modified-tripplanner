@@ -413,7 +413,7 @@ module.exports.drawRouteStops = function (routeId, stops) {
 
 module.exports.mapRouteStops = function (legs) {
     for (var r in this.addedRouteStops) {
-        this.addedRouteStops[r].removeFrom(this.activeMap);
+        this.activeMap.removeLayer(this.addedRouteStops[r]);
     }
 
     this.addedRouteStops = {};
