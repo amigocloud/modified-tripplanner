@@ -155,7 +155,7 @@ View.prototype.showDetails = function (e) {
     scrollable.scrollTop = el.offsetTop - 52;
 
     this.isSelected = true;
-    mapView.loadRouteStops(23);
+    mapView.mapRouteStops(this.model.attrs.plan.legs);
 };
 
 View.prototype.hideDetails = function (e) {
