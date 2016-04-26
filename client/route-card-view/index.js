@@ -138,9 +138,11 @@ View.prototype.selectRoute = function (e) {
 
 View.prototype.showDetails = function (e) {
     if (optionsView.lastCardSelected) {
+        optionsView.lastCardSelected.hideDetails();
         console.log('prev selected ', optionsView.lastCardSelected);
     }
-    optionsView.lastCardSelected = this.model.index;
+
+    optionsView.lastCardSelected = this;
 
     e.preventDefault();
     mapView.removeRouteStops();
