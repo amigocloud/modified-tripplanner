@@ -492,11 +492,11 @@ module.exports.loadRouteStops = function (routeId, from, to) {
 
         // limiting number of stops to draw
         for (var s = 0; s < route.directions[i].stops.length; s++) {
-            if (route.directions[i].stops[s].code + '' === from) {
+            if (route.directions[i].stops[s].code.toString() === from) {
                 startAdding = true;
                 stops.push(route.directions[i].stops[s]);
             }
-            if (startAdding && route.directions[i].stops[s].code + '' === to) {
+            if (startAdding && route.directions[i].stops[s].code.toString() === to) {
                 stops.push(route.directions[i].stops[s]);
                 startAdding = false;
             }
@@ -512,6 +512,7 @@ module.exports.loadRouteStops = function (routeId, from, to) {
 
 module.exports.loadRouteBuses = function (routeId, stops, direction) {
     var endPoint = 'http://api.transitime.org/api/v1/key/5ec0de94/agency/vta/command/vehiclesDetails';
+    direction = direction.toString();
 
     $.get(endPoint, {
         r: routeId,
@@ -521,7 +522,7 @@ module.exports.loadRouteBuses = function (routeId, stops, direction) {
             validBuses = [];
         for (var i = 0; i < buses.length; i++) {
             var r = $.grep(stops, function (e) {
-                return (e.id === buses[i].nextStopId && buses[i].direction === (direction + ''));
+                return (e.id === buses[i].nextStopId && buses[i].direction === direction);
             });
 
             if (r.length) {
