@@ -399,12 +399,14 @@ module.exports.drawRouteStops = function (routeId, stops) {
         });
 
         marker.stopCode = stops[i].code;
-        marker.bindPopup('');
+        marker.bindPopup('<i class="fa fa-cog fa-spin"></i>');
 
         // Requesting stop prediction information here to avoid getting information ahead
         marker.on('click', function (e) {
-            console.log(e.target.stopCode);
             var popup = e.target.getPopup();
+            popup.setContent('<i class="fa fa-cog fa-spin"></i>');
+            popup.update();
+
             $.get(endPoint, {
                 rs: routeId + '|' + e.target.stopCode,
                 format: 'json'
