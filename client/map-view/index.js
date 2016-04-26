@@ -91,6 +91,7 @@ module.exports.collision_group = {};
 module.exports.marker_collision_group = [];
 module.exports.last_marker_collision_group = [];
 module.exports.addedRouteStops = [];
+module.exports.addedRouteBuses = [];
 
 module.exports.drawMakerCollision = function () {
     var collision_group = L.layerGroup.collision();
@@ -437,7 +438,6 @@ module.exports.drawRouteStops = function (routeId, stops) {
 
     this.addedRouteStops.push(stopsGroup);
     stopsGroup.addTo(this.activeMap);
-    stopsGroup.bringToFront();
 };
 
 module.exports.removeRouteStops = function () {
@@ -446,6 +446,14 @@ module.exports.removeRouteStops = function () {
     }
 
     this.addedRouteStops = [];
+};
+
+module.exports.removeRouteBuses = function () {
+    for (var r in this.addedRouteBuses) {
+        this.activeMap.removeLayer(this.addedRouteBuses[r]);
+    }
+
+    this.addedRouteBuses = [];
 };
 
 module.exports.mapRouteStops = function (legs) {
@@ -510,6 +518,16 @@ module.exports.loadRouteStops = function (routeId, from, to) {
     });
 };
 
+module.exports.findBusInRoute = function (bus, stops, direction) {
+    for (var i = 0; i < stops.length; i++) {
+        if (stops[i].id === bus.nextStopId && bus.direction === direction) {
+            return true;
+        }
+    }
+
+    return false;
+};
+
 module.exports.loadRouteBuses = function (routeId, stops, direction) {
     var endPoint = 'http://api.transitime.org/api/v1/key/5ec0de94/agency/vta/command/vehiclesDetails';
     direction = direction.toString();
@@ -521,22 +539,80 @@ module.exports.loadRouteBuses = function (routeId, stops, direction) {
         var buses = data.vehicles,
             validBuses = [];
         for (var i = 0; i < buses.length; i++) {
-            var r = $.grep(stops, function (e) {
-                if (e.id === buses[i].nextStopId) {
-                    console.log(buses[i].direction);
-                    console.log(direction);
-                }
-                // console.log(buses[i].direction);
-                // console.log(direction);
-                return (e.id === buses[i].nextStopId && buses[i].direction === direction);
-            });
-
-            if (r.length) {
+            if (module.exports.findBusInRoute(buses[i], stops, direction)) {
                 validBuses.push(buses[i]);
             }
         }
 
-        // console.log(buses);
-        // console.log(validBuses);
+        console.log(validBuses);
+        module.exports.drawRouteBuses(validBuses);
     });
+};
+
+module.exports.drawRouteBuses = function (buses) {
+    var busesGroup = L.featureGroup();
+    var endPoint = 'http://api.transitime.org/api/v1/key/5ec0de94/agency/vta/command/predictions';
+
+    for (var i = 0; i < buses.length; i++) {
+        var class_name = 'leaflet-div-bus';
+
+        var marker = L.marker({
+            "lat": buses[i].loc.lat,
+            "lng": buses[i].loc.lon
+        }, {
+            icon: L.divIcon({
+                className: class_name,
+                iconSize: [15, 15],
+                iconAnchor: [0, 0]
+            }),
+            interactive: false,
+            clickable: true
+        });
+
+        // marker.extra = stops[i];
+        // marker.bindPopup('<i class="fa fa-circle-o-notch fa-spin"></i>');
+
+        // Requesting stop prediction information here to avoid getting information ahead
+        // marker.on('click', function (e) {
+        //     var popup = e.target.getPopup();
+        //     popup.setContent('<i class="fa fa-circle-o-notch fa-spin"></i>');
+        //     popup.update();
+
+        //     console.log(e.target.extra);
+
+        //     $.get(endPoint, {
+        //         rs: routeId + '|' + e.target.extra.code,
+        //         format: 'json'
+        //     }).done(function (data) {
+        //         var stopInfo = data.predictions[0];
+        //         var prediction = data.predictions[0].dest[0].pred;
+        //         var string = '<div class="stop-popup">' +
+        //                 '<div class="popup-header"><h5>' +
+        //                 stopInfo.stopName + ' (' + stopInfo.stopId + ')' +
+        //             '</h5></div>';
+        //         string += '<div class="popup-body">';
+        //         string += '<strong>Route:</strong> ';
+        //         string += stopInfo.routeShortName + '<br/>';
+        //         string += '<strong>Predictions:</strong><br/>';
+        //         string += '<ul>';
+
+        //         for (var pred in prediction) {
+        //             string += '<li>' + prediction[pred].min + 'mins ' + prediction[pred].sec % 60 + 'secs</li>';
+        //         }
+
+        //         string += '</ul>';
+        //         string += '</div>';
+        //         string += '</div>';
+
+        //         popup.setContent(string);
+        //         popup.update();
+        //     });
+        // });
+
+        marker.addTo(busesGroup);
+    }
+
+    this.addedRouteBuses.push(busesGroup);
+    busesGroup.addTo(this.activeMap);
+    busesGroup.bringToFront();
 };
