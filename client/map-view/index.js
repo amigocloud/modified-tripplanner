@@ -373,27 +373,15 @@ module.exports.drawRouteAmigo = function (legs, mode, itineration) {
 };
 
 module.exports.makeStopPopUp = function (routeId, stop) {
-    var endPoint = 'http://api.transitime.org/api/v1/key/5ec0de94/agency/vta/command/predictions';
 
-    $.get(endPoint, {
-        rs: routeId + '|' + stop.code,
-        format: 'json'
-    }).done(function (data) {
-        console.log(data);
-        var string = '<div class="stop-popup">' +
-                '<div class="popup-header"><h5><i class="fa fa-map-pin" aria-hidden="true"></i>' +
-            '</h5></div>';
 
-        string += '<div class="popup-body">';
-        string += '</div>';
-        string += '</div>';
 
-        return string;
-    });
 };
 
 module.exports.drawRouteStops = function (routeId, stops) {
     var stopsGroup = L.featureGroup();
+    var endPoint = 'http://api.transitime.org/api/v1/key/5ec0de94/agency/vta/command/predictions';
+
     for (var i = 0; i < stops.length; i++) {
         var class_name = 'leaflet-div-icon1 circle-fade-0';
 
@@ -410,7 +398,26 @@ module.exports.drawRouteStops = function (routeId, stops) {
             clickable: true
         });
 
-        marker.bindPopup(module.exports.makeStopPopUp(routeId, stops[i]));
+        marker.on('click', function (e) {
+            var popup = e.target.getPopup();
+            $.get(endPoint, {
+                rs: routeId + '|' + stop.code,
+                format: 'json'
+            }).done(function (data) {
+                console.log(data);
+                var string = '<div class="stop-popup">' +
+                        '<div class="popup-header"><h5><i class="fa fa-map-pin" aria-hidden="true"></i>' +
+                    '</h5></div>';
+
+                string += '<div class="popup-body">';
+                string += '</div>';
+                string += '</div>';
+
+                popup.setContent(string);
+                popup.update();
+            });
+        });
+        // marker.bindPopup(module.exports.makeStopPopUp(routeId, stops[i]));
         marker.addTo(stopsGroup);
     }
 
