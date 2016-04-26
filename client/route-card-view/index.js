@@ -21,6 +21,9 @@ var mapView = require('map-view');
 var View = module.exports = view(require('./template.html'), function (view, model) {
     view.isSelected = false;
     mouseenter(view.el, function () {
+        if (optionsView.lastCardSelected !== this) {
+            mapView.removeRouteStops();
+        }
         clearTimeout();
         var itineration = JSON.parse(localStorage.getItem('itineration'));
         for (var i = 0; i < itineration.length; i++) {
@@ -137,11 +140,6 @@ View.prototype.selectRoute = function (e) {
  */
 
 View.prototype.showDetails = function (e) {
-    if (optionsView.lastCardSelected) {
-        optionsView.lastCardSelected.hideDetails(e);
-        console.log('prev selected ', optionsView.lastCardSelected);
-    }
-
     optionsView.lastCardSelected = this;
 
     e.preventDefault();
