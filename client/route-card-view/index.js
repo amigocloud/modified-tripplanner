@@ -10,6 +10,7 @@ var RouteModal = require('route-modal');
 var routeSummarySegments = require('route-summary-segments');
 var routeResource = require('route-resource');
 var session = require('session');
+var optionsView = require('options-view');
 //var transitive = require('transitive');
 var view = require('view');
 var mapView = require('map-view');
@@ -136,6 +137,11 @@ View.prototype.selectRoute = function (e) {
  */
 
 View.prototype.showDetails = function (e) {
+    if (optionsView.lastCardSelected) {
+        console.log('prev selected ', optionsView.lastCardSelected);
+    }
+    optionsView.lastCardSelected = this.model.index;
+
     e.preventDefault();
     mapView.removeRouteStops();
     var el = this.el;

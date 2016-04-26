@@ -514,7 +514,7 @@ module.exports.loadRouteStops = function (routeId, from, to) {
         }
 
         module.exports.drawRouteStops(routeId, stops);
-        module.exports.loadRouteBuses(routeId, stops, i);
+        // module.exports.loadRouteBuses(routeId, stops, i);
     });
 };
 
@@ -540,9 +540,9 @@ module.exports.loadRouteBuses = function (routeId, stops, direction) {
         var buses = data.vehicles,
             validBuses = [];
         for (var i = 0; i < buses.length; i++) {
-            // if (module.exports.findBusInRoute(buses[i], stops, direction)) {
+            if (module.exports.findBusInRoute(buses[i], stops, direction)) {
                 validBuses.push(buses[i]);
-            // }
+            }
         }
 
         console.log(validBuses);
