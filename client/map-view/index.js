@@ -524,7 +524,7 @@ module.exports.loadRouteBuses = function (routeId, stops, direction) {
             var r = $.grep(stops, function (e) {
                 if (e.id === buses[i].nextStopId) {
                     console.log(buses[i].direction);
-                    console.log(nextStopId);
+                    console.log(direction);
                 }
                 // console.log(buses[i].direction);
                 // console.log(direction);
