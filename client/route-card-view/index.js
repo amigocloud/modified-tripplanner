@@ -21,7 +21,7 @@ var mapView = require('map-view');
 var View = module.exports = view(require('./template.html'), function (view, model) {
     view.isSelected = false;
     mouseenter(view.el, function () {
-        if (optionsView.lastCardSelected !== this) {
+        if (optionsView.lastCardSelected.model.index !== this.model.index) {
             mapView.removeRouteStops();
         }
         clearTimeout();
