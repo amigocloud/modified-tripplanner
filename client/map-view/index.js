@@ -372,16 +372,24 @@ module.exports.drawRouteAmigo = function (legs, mode, itineration) {
     route.addTo(this.activeMap);
 };
 
-module.exports.makeStopPupup = function (marker) {
-    string = '<div class="stop-popup">' +
-        '<div class="popup-header"><h5><i class="fa fa-bus"></i> stop content!!! 🦁';
-    string += '</h5></div>';
-    string += '<div class="popup-body">';
-    string += 'pop up content';
-    string += '</div>';
-    string += '</div>';
+module.exports.makeStopPopUp = function (routeId, stop) {
+    var endPoint = 'http://api.transitime.org/api/v1/key/5ec0de94/agency/vta/command/predictions';
 
-    return string;
+    $.get(endPoint, {
+        rs: routeId + '|' + stop.code,
+        format: 'json'
+    }).done(function (data) {
+        console.log(data);
+        var string = '<div class="stop-popup">' +
+                '<div class="popup-header"><h5><i class="fa fa-map-pin" aria-hidden="true"></i>' +
+            '</h5></div>';
+
+        string += '<div class="popup-body">';
+        string += '</div>';
+        string += '</div>';
+
+        return string;
+    });
 };
 
 module.exports.drawRouteStops = function (routeId, stops) {
@@ -402,6 +410,7 @@ module.exports.drawRouteStops = function (routeId, stops) {
             clickable: false
         });
 
+        marker.bindPopup(module.exports.makeStopPopUp(routeId, stops[i]));
         marker.addTo(stopsGroup);
     }
 
@@ -436,10 +445,11 @@ module.exports.loadRouteStops = function (routeId, from, to) {
         r: routeId,
         format: 'json'
     }).done(function (data) {
-        var route = data.routes[0];
-        var foundFrom = false, foundTo = false;
-        var i = 0;
-        var stops = [];
+        var route = data.routes[0],
+            foundFrom = false, foundTo = false,
+            startAdding = false,
+            stops = [],
+            i = 0;
 
         // detecting which direction we need to draw
         for (; i < route.directions.length; i++) {
@@ -459,7 +469,6 @@ module.exports.loadRouteStops = function (routeId, from, to) {
         }
 
         // limiting number of stops to draw
-        var startAdding = false;
         for (var s = 0; s < route.directions[i].stops.length; s++) {
             if (route.directions[i].stops[s].code + '' === from) {
                 startAdding = true;
