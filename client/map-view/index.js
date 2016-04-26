@@ -439,6 +439,7 @@ module.exports.drawRouteStops = function (routeId, stops) {
 
     this.addedRouteStops.push(stopsGroup);
     stopsGroup.addTo(this.activeMap);
+    stopsGroup.bringToFront();
 };
 
 module.exports.removeRouteStops = function () {
