@@ -372,12 +372,6 @@ module.exports.drawRouteAmigo = function (legs, mode, itineration) {
     route.addTo(this.activeMap);
 };
 
-module.exports.makeStopPopUp = function (routeId, stop) {
-
-
-
-};
-
 module.exports.drawRouteStops = function (routeId, stops) {
     var stopsGroup = L.featureGroup();
     var endPoint = 'http://api.transitime.org/api/v1/key/5ec0de94/agency/vta/command/predictions';
@@ -512,5 +506,30 @@ module.exports.loadRouteStops = function (routeId, from, to) {
         }
 
         module.exports.drawRouteStops(routeId, stops);
+        module.exports.loadRouteBuses(routeId, stops, i);
+    });
+};
+
+module.exports.loadRouteBuses = function (routeId, stops, direction) {
+    var endPoint = 'http://api.transitime.org/api/v1/key/5ec0de94/agency/vta/command/vehiclesDetails';
+
+    $.get(endPoint, {
+        r: routeId,
+        format: 'json'
+    }).done(function (data) {
+        var buses = data.vehicles,
+            validBuses = [];
+        for (var i = 0; i < buses.length; i++) {
+            var r = $.grep(stops, function (e) {
+                return (e.id === buses[i].nextStopId && buses[i].direction === (direction + ''));
+            });
+
+            if (r.length) {
+                validBuses.push(buses[i]);
+            }
+        }
+
+        console.log(buses);
+        console.log(validBuses);
     });
 };
