@@ -421,9 +421,9 @@ module.exports.drawRouteStops = function (routeId, stops) {
                 string += '<strong>Route:</strong> ';
                 string += stopInfo.routeShortName + '<br/>';
                 string += '<strong>Predictions:</strong><br/>';
-                string += prediction[0].min + 'mins<br/>';
-                string += prediction[1].min + 'mins<br/>';
-                string += prediction[2].min + 'mins<br/>';
+                string += prediction[0].min + 'mins ' + prediction[0].sec % 60 + 'secs<br/>';
+                string += prediction[1].min + 'mins ' + prediction[0].sec % 60 + 'secs<br/>';
+                string += prediction[2].min + 'mins ' + prediction[0].sec % 60 + 'secs<br/>';
                 string += '</div>';
                 string += '</div>';
 
