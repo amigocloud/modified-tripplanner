@@ -422,18 +422,30 @@ module.exports.mapRouteStops = function (legs) {
 
     for (var i = 0; i < legs.length; i++) {
         if (legs[i].mode === 'BUS') {
-            module.exports.loadRouteStops(legs[i].routeId);
+            module.exports.loadRouteStops(legs[i].routeId,
+                                          legs[i].from.stopCode,
+                                          legs[i].to.stopCode);
         }
     }
 };
 
-module.exports.loadRouteStops = function (routeId) {
+module.exports.loadRouteStops = function (routeId, from, to) {
     var endPoint = 'http://api.transitime.org/api/v1/key/5ec0de94/agency/vta/command/routesDetails';
 
     $.get(endPoint, {
         r: routeId,
         format: 'json'
     }).done(function (data) {
+        var foundFrom = false, foundTo = false;
+        var i = 0;
+        console.log(data);
+        // for (; i < data.routes[0].directions.length; i++) {
+        //     for (var j = 0; j < data.routes[0].directions[i].stops.length; j++) {
+        //         for (var k = 0; k < data.routes[0].directions[i].stops[j].length; k++) {
+        //             if (from === data.routes[0].directions[i].stops[j][k].id)
+        //         }
+        //     }
+        // }
         module.exports.drawRouteStops(routeId, data.routes[0].directions[0].stops);
     });
 };
