@@ -387,7 +387,8 @@ module.exports.drawRouteStops = function (routeId, stops) {
 
         var marker = L.marker({
             "lat": stops[i].lat,
-            "lng": stops[i].lon
+            "lng": stops[i].lon,
+            "stopCode": stops[i].code
         }, {
             icon: L.divIcon({
                 className: class_name,
@@ -403,6 +404,7 @@ module.exports.drawRouteStops = function (routeId, stops) {
 
         // Requesting stop prediction information here to avoid getting information ahead
         marker.on('click', function (e) {
+            console.log(e);
             var popup = e.target.getPopup();
             $.get(endPoint, {
                 rs: routeId + '|' + stopCode,
