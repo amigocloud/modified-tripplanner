@@ -495,8 +495,10 @@ module.exports.loadRouteStops = function (routeId, from, to) {
         for (var s = 0; s < route.directions[i].stops.length; s++) {
             if (route.directions[i].stops[s].code + '' === from) {
                 startAdding = true;
+                stops.push(route.directions[i].stops[s]);
             }
             if (startAdding && route.directions[i].stops[s].code + '' === to) {
+                stops.push(route.directions[i].stops[s]);
                 startAdding = false;
             }
             if (startAdding) {
