@@ -411,19 +411,20 @@ module.exports.drawRouteStops = function (routeId, stops) {
                 var stopInfo = data.predictions[0];
                 var prediction = data.predictions[0].dest[0].pred;
                 var string = '<div class="stop-popup">' +
-                        '<div class="popup-header"><h5><i class="fa fa-map-pin" aria-hidden="true"></i>' +
+                        '<div class="popup-header"><h5>' +
+                        stopInfo.stopName + ' (' + stopInfo.stopId + ')' +
                     '</h5></div>';
                 string += '<div class="popup-body">';
-                string += '<strong>Stop:</strong> ';
-                string += stopInfo.stopName + '(' + stopInfo.stopId + ')<br/>';
-                string += '<strong>RTIID:</strong> ';
-                string += stopInfo.stopCode + '<br/>';
                 string += '<strong>Route:</strong> ';
                 string += stopInfo.routeShortName + '<br/>';
                 string += '<strong>Predictions:</strong><br/>';
-                string += prediction[0].min + 'mins ' + prediction[0].sec % 60 + 'secs<br/>';
-                string += prediction[1].min + 'mins ' + prediction[0].sec % 60 + 'secs<br/>';
-                string += prediction[2].min + 'mins ' + prediction[0].sec % 60 + 'secs<br/>';
+                string += '<ul>';
+
+                for (var pred in prediction) {
+                    string += '<li>' + prediction[pred].min + 'mins ' + prediction[pred].sec % 60 + 'secs</li>';
+                }
+
+                string += '</ul>';
                 string += '</div>';
                 string += '</div>';
 
