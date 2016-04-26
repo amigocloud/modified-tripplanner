@@ -398,9 +398,10 @@ module.exports.drawRouteStops = function (routeId, stops) {
             clickable: true
         });
 
+        var stopCode = stops[i].code;
+
         marker.on('click', function (e) {
             var popup = e.target.getPopup();
-            var stopCode = stops[i].code;
             $.get(endPoint, {
                 rs: routeId + '|' + stopCode,
                 format: 'json'
