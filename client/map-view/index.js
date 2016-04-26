@@ -442,11 +442,11 @@ module.exports.loadRouteStops = function (routeId, from, to) {
 
         for (; i < route.directions.length; i++) {
             for (var j = 0; j < route.directions[i].stops.length; j++) {
-                if (route.directions[i].stops[j].id === from) {
+                if (route.directions[i].stops[j].code + '' === from) {
                     foundFrom = true;
                     console.log('found from');
                 }
-                if (foundFrom === true && route.directions[i].stops[j].id === to) {
+                if (foundFrom === true && route.directions[i].stops[j].code + '' === to) {
                     foundTo = true;
                     console.log('found to');
                 }
