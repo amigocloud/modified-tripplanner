@@ -399,6 +399,7 @@ module.exports.drawRouteStops = function (routeId, stops) {
         });
 
         var stopCode = stops[i].code;
+        marker.bindPopup('');
 
         marker.on('click', function (e) {
             var popup = e.target.getPopup();
