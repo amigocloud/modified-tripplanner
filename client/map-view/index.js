@@ -401,18 +401,29 @@ module.exports.drawRouteStops = function (routeId, stops) {
         var stopCode = stops[i].code;
         marker.bindPopup('');
 
+        // Requesting stop prediction information here to avoid getting information ahead
         marker.on('click', function (e) {
             var popup = e.target.getPopup();
             $.get(endPoint, {
                 rs: routeId + '|' + stopCode,
                 format: 'json'
             }).done(function (data) {
-                console.log(data);
+                var stopInfo = data.predictions[0];
+                var prediction = data.predictions[0].dest[0].pred;
                 var string = '<div class="stop-popup">' +
                         '<div class="popup-header"><h5><i class="fa fa-map-pin" aria-hidden="true"></i>' +
                     '</h5></div>';
-
                 string += '<div class="popup-body">';
+                string += '<strong>Stop:</strong> ';
+                string += stopInfo.stopName + '(' + stopInfo.stopId + ')<br/>';
+                string += '<strong>RTIID:</strong> ';
+                string += stopInfo.stopCode + '<br/>';
+                string += '<strong>Route:</strong> ';
+                string += stopInfo.routeShortName + '<br/>';
+                string += '<strong>Predictions:</strong><br/>';
+                string += prediction[0].min + 'mins<br/>';
+                string += prediction[1].min + 'mins<br/>';
+                string += prediction[2].min + 'mins<br/>';
                 string += '</div>';
                 string += '</div>';
 
@@ -420,7 +431,7 @@ module.exports.drawRouteStops = function (routeId, stops) {
                 popup.update();
             });
         });
-        // marker.bindPopup(module.exports.makeStopPopUp(routeId, stops[i]));
+
         marker.addTo(stopsGroup);
     }
 
