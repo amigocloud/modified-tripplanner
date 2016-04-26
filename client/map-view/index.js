@@ -529,6 +529,7 @@ module.exports.findBusInRoute = function (bus, stops, direction) {
 };
 
 module.exports.loadRouteBuses = function (routeId, stops, direction) {
+    module.exports.removeRouteBuses();
     var endPoint = 'http://api.transitime.org/api/v1/key/5ec0de94/agency/vta/command/vehiclesDetails';
     direction = direction.toString();
 
@@ -539,9 +540,9 @@ module.exports.loadRouteBuses = function (routeId, stops, direction) {
         var buses = data.vehicles,
             validBuses = [];
         for (var i = 0; i < buses.length; i++) {
-            if (module.exports.findBusInRoute(buses[i], stops, direction)) {
+            // if (module.exports.findBusInRoute(buses[i], stops, direction)) {
                 validBuses.push(buses[i]);
-            }
+            // }
         }
 
         console.log(validBuses);
