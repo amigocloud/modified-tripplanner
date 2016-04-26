@@ -523,8 +523,8 @@ module.exports.loadRouteBuses = function (routeId, stops, direction) {
         for (var i = 0; i < buses.length; i++) {
             var r = $.grep(stops, function (e) {
                 if (e.id === buses[i].nextStopId) {
-                    console.log(e.id);
-                    console.log(buses[i].nextStopId);
+                    console.log(buses[i].direction);
+                    console.log(nextStopId);
                 }
                 // console.log(buses[i].direction);
                 // console.log(direction);
