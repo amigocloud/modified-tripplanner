@@ -399,12 +399,12 @@ module.exports.drawRouteStops = function (routeId, stops) {
         });
 
         marker.stopCode = stops[i].code;
-        marker.bindPopup('<i class="fa fa-circle-o-notch"></i>');
+        marker.bindPopup('<i class="fa fa-circle-o-notch fa-spin"></i>');
 
         // Requesting stop prediction information here to avoid getting information ahead
         marker.on('click', function (e) {
             var popup = e.target.getPopup();
-            popup.setContent('<i class="fa fa-circle-o-notch"></i>');
+            popup.setContent('<i class="fa fa-circle-o-notch fa-spin"></i>');
             popup.update();
 
             $.get(endPoint, {
