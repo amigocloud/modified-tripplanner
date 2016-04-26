@@ -522,6 +522,10 @@ module.exports.loadRouteBuses = function (routeId, stops, direction) {
             validBuses = [];
         for (var i = 0; i < buses.length; i++) {
             var r = $.grep(stops, function (e) {
+                console.log(e.id);
+                console.log(buses[i].nextStopId);
+                console.log(buses[i].direction);
+                console.log(direction);
                 return (e.id === buses[i].nextStopId && buses[i].direction === direction);
             });
 
@@ -530,7 +534,7 @@ module.exports.loadRouteBuses = function (routeId, stops, direction) {
             }
         }
 
-        console.log(buses);
-        console.log(validBuses);
+        // console.log(buses);
+        // console.log(validBuses);
     });
 };
