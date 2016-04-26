@@ -138,7 +138,7 @@ View.prototype.selectRoute = function (e) {
 
 View.prototype.showDetails = function (e) {
     if (optionsView.lastCardSelected) {
-        optionsView.lastCardSelected.hideDetails();
+        optionsView.lastCardSelected.hideDetails(e);
         console.log('prev selected ', optionsView.lastCardSelected);
     }
 
