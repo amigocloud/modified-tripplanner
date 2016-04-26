@@ -439,16 +439,16 @@ module.exports.loadRouteStops = function (routeId, from, to) {
         var route = data.routes[0];
         var foundFrom = false, foundTo = false;
         var i = 0;
+        var stops = [];
 
+        // detecting which direction we need to draw
         for (; i < route.directions.length; i++) {
             for (var j = 0; j < route.directions[i].stops.length; j++) {
                 if (route.directions[i].stops[j].code + '' === from) {
                     foundFrom = true;
-                    console.log('found from');
                 }
                 if (foundFrom === true && route.directions[i].stops[j].code + '' === to) {
                     foundTo = true;
-                    console.log('found to');
                 }
             }
             if (foundFrom && foundTo) {
@@ -458,8 +458,20 @@ module.exports.loadRouteStops = function (routeId, from, to) {
             foundTo = false;
         }
 
-        console.log(i);
+        // limiting number of stops to draw
+        var startAdding = false;
+        for (var s = 0; s < route.directions[i].stops.length; s++) {
+            if (route.directions[i].stops[s].code + '' === from) {
+                startAdding = true;
+            }
+            if (startAdding && route.directions[i].stops[s].code + '' === to) {
+                startAdding = false;
+            }
+            if (startAdding) {
+                stops.push(route.directions[i].stops[s]);
+            }
+        }
 
-        module.exports.drawRouteStops(routeId, data.routes[0].directions[0].stops);
+        module.exports.drawRouteStops(routeId, stops);
     });
 };
