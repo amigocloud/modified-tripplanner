@@ -436,16 +436,24 @@ module.exports.loadRouteStops = function (routeId, from, to) {
         r: routeId,
         format: 'json'
     }).done(function (data) {
+        var route = data.routes[0];
         var foundFrom = false, foundTo = false;
         var i = 0;
-        console.log(data);
-        // for (; i < data.routes[0].directions.length; i++) {
-        //     for (var j = 0; j < data.routes[0].directions[i].stops.length; j++) {
-        //         for (var k = 0; k < data.routes[0].directions[i].stops[j].length; k++) {
-        //             if (from === data.routes[0].directions[i].stops[j][k].id)
-        //         }
-        //     }
-        // }
+
+        for (; i < route.directions.length; i++) {
+            for (var j = 0; j < route.directions[i].stops.length; j++) {
+                if (route.directions[i].stops[j].id === from) {
+                    foundFrom = true;
+                }
+                if (route.directions[i].stops[j].id === to && foundFrom === true) {
+                    foundTo = true;
+                    break;
+                }
+            }
+        }
+
+        console.log(i);
+
         module.exports.drawRouteStops(routeId, data.routes[0].directions[0].stops);
     });
 };
