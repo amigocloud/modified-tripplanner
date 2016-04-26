@@ -407,7 +407,7 @@ module.exports.drawRouteStops = function (routeId, stops) {
                 iconAnchor: [0, 0]
             }),
             interactive: false,
-            clickable: false
+            clickable: true
         });
 
         marker.bindPopup(module.exports.makeStopPopUp(routeId, stops[i]));
