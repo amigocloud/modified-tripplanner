@@ -6,6 +6,7 @@ var routeboxer = require('./leaflet_routeboxer.js');
 var leaflet_label = require('./leaflet_label/leaflet.label-src.js');
 var collision = require('./leaflet_layergroup_collision.js');
 var session = require('session');
+var optionsView = require('options-view');
 
 var center = config.geocode().center.split(',').map(parseFloat)
 if (config.map_provider && config.map_provider() !== 'AmigoCloud') {
@@ -57,6 +58,13 @@ module.exports = function (el) {
         blurLayer.addTo(map);
 
         module.exports.activeMap = map;
+
+        module.exports.activeMap.on('zoomend', function () {
+            if (optionsView.lastCardSelected) {
+                console.log('zoomed in');
+                optionsView.lastCardSelected.mouseneter();
+            }
+        });
 
         map.realtimeControl = L.control.toggleRealTime().addTo(map);
 
