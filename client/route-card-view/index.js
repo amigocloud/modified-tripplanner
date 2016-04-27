@@ -60,10 +60,6 @@ var View = module.exports = view(require('./template.html'), function (view, mod
     });
 
     mouseleave(view.el, function () {
-        if (view.isSelected) {
-            return;
-        }
-
         var itineration = JSON.parse(localStorage.getItem('itineration'));
         for (var i = 0; i < itineration.length; i++) {
             var rec2 = d3.selectAll(".circle-fade-" + i);
