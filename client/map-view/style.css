@@ -113,6 +113,25 @@
   margin: 10px;
 }
 
+.stop-popup .leaflet-popup-content-wrapper .leaflet-popup-content .stop-loading {
+  text-align: center;
+  background: #fff;
+}
+
+.stop-popup .leaflet-popup-close-button {
+  background: #A2002F;
+  top: 5px;
+  right: 5px;
+  width: auto;
+  border-radius: 2px;
+  color: #fff;
+}
+
 .stop-popup-content .popup-body {
   padding: 5px;
+}
+
+.stop-popup-content .popup-body ul li {
+  padding-left: 20px;
+  margin-bottom: 0;
 }

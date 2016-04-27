@@ -394,14 +394,14 @@ module.exports.drawRouteStops = function (routeId, stops) {
         });
 
         marker.extra = stops[i];
-        marker.bindPopup('<i class="fa fa-circle-o-notch fa-spin"></i>', {
+        marker.bindPopup('<div class="stop-loading"><i class="fa fa-circle-o-notch fa-spin"></i><div>', {
             className: 'stop-popup'
         });
 
         // Requesting stop prediction information here to avoid getting information ahead
         marker.on('click', function (e) {
             var popup = e.target.getPopup();
-            popup.setContent('<i class="fa fa-circle-o-notch fa-spin"></i>');
+            popup.setContent('<div class="stop-loading"><i class="fa fa-circle-o-notch fa-spin"></i><div>');
             popup.update();
 
             console.log(e.target.extra);
