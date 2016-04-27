@@ -148,8 +148,8 @@ View.prototype.selectRoute = function (e) {
 
 View.prototype.showDetails = function (e) {
     if (optionsView.lastCardSelected && optionsView.lastCardSelected.model.index !== this.model.index) {
-        optionsView.lastCardSelected.hideDetails(e);
         optionsView.lastCardSelected.mouseleave();
+        optionsView.lastCardSelected.hideDetails(e);
         this.mouseenter();
     }
 
