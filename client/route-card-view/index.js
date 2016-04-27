@@ -179,12 +179,12 @@ View.prototype.showDetails = function (e) {
     this.isSelected = true;
     console.log(this);
     mapView.mapRouteStops(this.model.attrs.plan.legs);
-    // mapView.activeMap.on('zoomend', function () {
-    //     if (optionsView.lastCardSelected) {
-    //         console.log('zoomed in');
-    //         optionsView.lastCardSelected.mouseneter();
-    //     }
-    // });
+    mapView.activeMap.on('zoomend', function () {
+        if (optionsView.lastCardSelected) {
+            console.log('zoomed in');
+            optionsView.lastCardSelected.mouseneter();
+        }
+    });
 };
 
 View.prototype.hideDetails = function (e) {
