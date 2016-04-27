@@ -143,6 +143,7 @@ View.prototype.showDetails = function (e) {
     if (optionsView.lastCardSelected && optionsView.lastCardSelected.model.index !== this.model.index) {
         optionsView.lastCardSelected.hideDetails(e);
         optionsView.lastCardSelected.mouseleave();
+        this.mouseenter();
     }
 
     var _this = this;
