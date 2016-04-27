@@ -181,6 +181,7 @@ View.prototype.showDetails = function (e) {
 };
 
 View.prototype.hideDetails = function (e) {
+    optionsView.lastCardSelected = null;
     e.preventDefault();
     var list = this.el.classList;
     if (list.contains('expanded')) {
