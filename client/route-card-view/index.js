@@ -181,9 +181,11 @@ View.prototype.showDetails = function (e) {
     mapView.mapRouteStops(this.model.attrs.plan.legs);
     mapView.activeMap.on('zoomend', function () {
         if (optionsView.lastCardSelected) {
-            console.log('zoomed in');
-            optionsView.lastCardSelected.mouseleave();
-            optionsView.lastCardSelected.mouseenter();
+            setTimeout(function () {
+                console.log('zoomed in');
+                optionsView.lastCardSelected.mouseleave();
+                optionsView.lastCardSelected.mouseenter();
+            }, 0);
         }
     });
 };
