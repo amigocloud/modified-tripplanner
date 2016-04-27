@@ -73,6 +73,8 @@
   text-align:center;
   border-radius:50%;
   outline: none;
+  width: 15px;
+  height: 15px;
 }
 
 .leaflet-div-icon2 {
