@@ -107,6 +107,18 @@
     transition: opacity .5s ease-in-out;
 }
 
+.stops-icon {
+  background: rgba(255, 255, 255, 0.5);
+  border:2px solid black;
+  font-weight:bold;
+  text-align:center;
+  border-radius:50%;
+  outline: none;
+  width: 15px;
+  height: 15px;
+}
+
+
 .stop-popup .leaflet-popup-content-wrapper {
   border-radius: 5px;
 }
