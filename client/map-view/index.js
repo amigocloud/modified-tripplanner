@@ -430,10 +430,6 @@ module.exports.drawRouteStops = function (routeId, stops) {
                     }
                 }
 
-                // remove later
-                string += '<li>' + 1 + ' mins</li>';
-                string += '<li>' + 5 + ' mins</li>';
-
                 string += '</ul>';
                 string += '</div>';
                 string += '</div>';

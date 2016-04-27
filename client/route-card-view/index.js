@@ -20,13 +20,7 @@ var mapView = require('map-view');
 
 var View = module.exports = view(require('./template.html'), function (view, model) {
     view.isSelected = false;
-    mouseenter(view.el, function () {
-        // if (optionsView.lastCardSelected && optionsView.lastCardSelected.model.index !== model.index) {
-        //     console.log(optionsView.lastCardSelected);
-        //     mapView.removeRouteStops();
-        // } else {
-
-        // }
+    view.mouseenter = function () {
         clearTimeout();
         var itineration = JSON.parse(localStorage.getItem('itineration'));
         for (var i = 0; i < itineration.length; i++) {
@@ -63,9 +57,11 @@ var View = module.exports = view(require('./template.html'), function (view, mod
                 d3.select(this).node().parentNode.appendChild(this);
             }
         });
-    });
+    };
 
-    mouseleave(view.el, function () {
+    mouseenter(view.el, view.mouseenter);
+
+    view.mouseleave = function () {
         if (view.isSelected) {
             return;
         }
@@ -97,7 +93,8 @@ var View = module.exports = view(require('./template.html'), function (view, mod
                 element.node().parentNode.appendChild(layer_ordenados[i]);
             }, 500);
         }
-    });
+    };
+    mouseleave(view.el, view.mouseleave);
 });
 
 View.prototype.calculator = function () {
@@ -145,6 +142,7 @@ View.prototype.selectRoute = function (e) {
 View.prototype.showDetails = function (e) {
     if (optionsView.lastCardSelected && optionsView.lastCardSelected.model.index !== this.model.index) {
         optionsView.lastCardSelected.hideDetails(e);
+        optionsView.lastCardSelected.mouseleave();
     }
 
     var _this = this;
