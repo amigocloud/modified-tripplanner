@@ -378,7 +378,7 @@ module.exports.drawRouteStops = function (routeId, stops) {
     var endPoint = 'http://api.transitime.org/api/v1/key/5ec0de94/agency/vta/command/predictions';
 
     for (var i = 0; i < stops.length; i++) {
-        var class_name = 'leaflet-div-icon1 circle-fade-0';
+        var class_name = 'leaflet-div-icon circle-fade-0';
 
         var marker = L.marker({
             "lat": stops[i].lat,

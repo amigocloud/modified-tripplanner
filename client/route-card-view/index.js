@@ -73,7 +73,7 @@ var View = module.exports = view(require('./template.html'), function (view, mod
 
         });
 
-        for (var i = 0; i < layer_ordenados.length; i++) {
+        for (i in layer_ordenados) {
             var element = d3.select(layer_ordenados[i]);
             var child = element.select("path");
             element.attr("data-show", "1");
