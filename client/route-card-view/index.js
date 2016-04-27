@@ -158,7 +158,7 @@ View.prototype.showDetails = function (e) {
     optionsView.lastCardSelected = _this;
 
     e.preventDefault();
-    // mapView.removeRouteStops();
+    mapView.removeRouteStops();
     var el = this.el;
     var expanded = document.querySelector('.option.expanded');
     if (expanded) expanded.classList.remove('expanded');

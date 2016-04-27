@@ -57,14 +57,14 @@ module.exports = function (el) {
         map.layersControl.addOverlay(blurLayer);
         blurLayer.addTo(map);
 
-        module.exports.activeMap = map;
-
-        module.exports.activeMap.on('zoomend', function () {
+        map.on('zoomend', function () {
             if (optionsView.lastCardSelected) {
                 console.log('zoomed in');
                 optionsView.lastCardSelected.mouseneter();
             }
         });
+
+        module.exports.activeMap = map;
 
         map.realtimeControl = L.control.toggleRealTime().addTo(map);
 
