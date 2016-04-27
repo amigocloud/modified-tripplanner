@@ -116,15 +116,16 @@
 .stop-popup .leaflet-popup-content-wrapper .leaflet-popup-content .stop-loading {
   text-align: center;
   background: #fff;
+  padding: 5px 0;
 }
 
 .stop-popup .leaflet-popup-close-button {
-  background: #A2002F;
-  top: 5px;
-  right: 5px;
-  width: auto;
-  border-radius: 2px;
-  color: #fff;
+  background: #A2002F !important;
+  top: 5px !important;
+  right: 5px !important;
+  width: auto !important;
+  border-radius: 2px !important;
+  color: #fff !important;
 }
 
 .stop-popup-content .popup-body {
