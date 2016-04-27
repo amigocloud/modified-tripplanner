@@ -69,6 +69,10 @@ var View = module.exports = view(require('./template.html'), function (view, mod
             return;
         }
 
+        if (optionsView.lastCardSelected && optionsView.lastCardSelected.model.index !== view.model.index) {
+            return;
+        }
+
         var itineration = JSON.parse(localStorage.getItem('itineration'));
         for (var i = 0; i < itineration.length; i++) {
             var rec2 = d3.selectAll(".circle-fade-" + i);
