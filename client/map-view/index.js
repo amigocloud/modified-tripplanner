@@ -394,7 +394,9 @@ module.exports.drawRouteStops = function (routeId, stops) {
         });
 
         marker.extra = stops[i];
-        marker.bindPopup('<i class="fa fa-circle-o-notch fa-spin"></i>');
+        marker.bindPopup('<i class="fa fa-circle-o-notch fa-spin"></i>', {
+            className: 'stop-popup'
+        });
 
         // Requesting stop prediction information here to avoid getting information ahead
         marker.on('click', function (e) {
@@ -417,11 +419,15 @@ module.exports.drawRouteStops = function (routeId, stops) {
                 string += '<div class="popup-body">';
                 string += '<strong>Route:</strong> ';
                 string += stopInfo.routeShortName + '<br/>';
-                string += '<strong>Predictions:</strong><br/>';
+                string += '<strong>Next Bus:</strong><br/>';
                 string += '<ul>';
 
                 for (var pred in prediction) {
-                    string += '<li>' + prediction[pred].min + 'mins ' + prediction[pred].sec % 60 + 'secs</li>';
+                    if (prediction[pred].sec < 60) {
+                        string += '<li>Arriving</li>';
+                    } else {
+                        string += '<li>' + prediction[pred].min + ' mins</li>';
+                    }
                 }
 
                 string += '</ul>';
