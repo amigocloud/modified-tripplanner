@@ -126,13 +126,14 @@
   width: auto !important;
   border-radius: 2px !important;
   color: #fff !important;
+  padding: 0 !important;
 }
 
 .stop-popup-content .popup-body {
   padding: 5px;
 }
 
-.stop-popup-content .popup-body ul li {
+.stop-popup-content .popup-body ul {
   padding-left: 20px;
   margin-bottom: 0;
 }
