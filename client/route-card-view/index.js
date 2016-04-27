@@ -182,7 +182,7 @@ View.prototype.showDetails = function (e) {
     mapView.activeMap.on('zoomend', function () {
         if (optionsView.lastCardSelected) {
             console.log('zoomed in');
-            optionsView.lastCardSelected.mouseneter();
+            optionsView.lastCardSelected.mouseenter();
         }
     });
 };
