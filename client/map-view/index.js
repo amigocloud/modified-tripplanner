@@ -412,7 +412,7 @@ module.exports.drawRouteStops = function (routeId, stops) {
             }).done(function (data) {
                 var stopInfo = data.predictions[0];
                 var prediction = data.predictions[0].dest[0].pred;
-                var string = '<div class="stop-popup">' +
+                var string = '<div class="stop-popup-content">' +
                         '<div class="popup-header"><h5>' +
                         stopInfo.stopName + ' (' + stopInfo.stopId + ')' +
                     '</h5></div>';
@@ -429,6 +429,10 @@ module.exports.drawRouteStops = function (routeId, stops) {
                         string += '<li>' + prediction[pred].min + ' mins</li>';
                     }
                 }
+
+                // remove later
+                string += '<li>' + 1 + ' mins</li>';
+                string += '<li>' + 5 + ' mins</li>';
 
                 string += '</ul>';
                 string += '</div>';

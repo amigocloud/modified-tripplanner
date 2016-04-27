@@ -104,3 +104,15 @@
     -webkit-transition: opacity .5s ease-in-out;
     transition: opacity .5s ease-in-out;
 }
+
+.stop-popup .leaflet-popup-content-wrapper {
+  border-radius: 5px;
+}
+
+.stop-popup .leaflet-popup-content-wrapper .leaflet-popup-content {
+  margin: 10px;
+}
+
+.stop-popup-content .popup-body {
+  padding: 5px;
+}
