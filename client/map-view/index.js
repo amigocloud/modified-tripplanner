@@ -406,7 +406,7 @@ module.exports.drawRouteAmigo = function (legs, mode, itineration) {
     return route;
 };
 
-module.exports.drawRouteStops = function (routeId, stops, isBus) {
+module.exports.drawRouteStops = function (routeId, stops, isBus, agencyId) {
     var stopsGroup = L.featureGroup();
     var endPoint = '/api/transitime/predictions';
 
@@ -444,7 +444,8 @@ module.exports.drawRouteStops = function (routeId, stops, isBus) {
 
             $.get(endPoint, {
                 rs: routeId + '|' + rtiid,
-                format: 'json'
+                format: 'json',
+                agency: agencyId
             }).done(function (data) {
                 var stopInfo = data.predictions[0];
                 var predictions = data.predictions[0].destinations[0].predictions;
@@ -452,7 +453,7 @@ module.exports.drawRouteStops = function (routeId, stops, isBus) {
                 var header = '<div class="popup-header">' + '<h5>' + stopInfo.stopName + '</h5></div>';
                 // var rtiidStr = '<strong>RTIID:</strong> ' + rtiid;
                 var rtiidStr = '<strong>Stop ID:</strong> ' + stopInfo.stopCode;
-                var route = '<strong>Route:</strong> ' + stopInfo.routeId + ' - ';
+                var route = '<strong>Route:</strong> ' + stopInfo.routeShortName + ' - ';
 
                 for (var i = 0; i < predictions.length; i++) {
                     route += predictions[i].min;
@@ -506,9 +507,11 @@ module.exports.removeRouteBuses = function () {
 
 module.exports.manageRealtime = {
     currRoutes: {},
+    agencyForRoute: {},
 
-    pushToCurrRoutes: function (id, direction) {
+    pushToCurrRoutes: function (id, direction, agencyId) {
         this.currRoutes[id] = direction;
+        this.agencyForRoute[id] = agencyId;
     },
 
     removeRealtimeData: function (map) {
@@ -520,6 +523,7 @@ module.exports.manageRealtime = {
 
     renderRealtime: function () {
         mapModule.currRoutes = this.currRoutes;
+        mapModule.agencyForRoute = this.agencyForRoute;
         mapModule.toggleRealtime(module.exports.getMap());
     },
 
@@ -536,14 +540,15 @@ module.exports.mapRouteStops = function (legs) {
 
     for (var i = 0; i < legs.length; i++) {
         vehicle = legs[i];
-        if (vehicle.mode === 'TRAM' || vehicle.mode === 'BUS') {
+        if (vehicle.mode === 'TRAM' || vehicle.mode === 'BUS' || vehicle.mode === 'RAIL') {
             if (vehicle.route.length < 4) {
                 deferredRouteDetails.push(
                     module.exports.loadRouteStops(
                         vehicle.route,
                         vehicle.from.stopCode,
                         vehicle.to.stopCode,
-                        vehicle.mode === 'BUS'
+                        vehicle.mode === 'BUS',
+                        vehicle.agencyId
                     )
                 );
             }
@@ -553,12 +558,13 @@ module.exports.mapRouteStops = function (legs) {
     this.manageRealtime.toggleAsyncRealtime(deferredRouteDetails);
 };
 
-module.exports.loadRouteStops = function (routeId, from, to, isBus) {
+module.exports.loadRouteStops = function (routeId, from, to, isBus, agencyId) {
     var endPoint = '/api/transitime/routeDetails';
 
     return $.get(endPoint, {
         r: routeId,
-        format: 'json'
+        format: 'json',
+        agency: agencyId
     }).success(function (data) {
         var route = data.routes[0],
             foundFrom = false, foundTo = false,
@@ -601,12 +607,13 @@ module.exports.loadRouteStops = function (routeId, from, to, isBus) {
             }
         }
 
-        module.exports.drawRouteStops(routeId, stops, isBus);
+        module.exports.drawRouteStops(routeId, stops, isBus, agencyId);
         module.exports.toggleMapElement('.leaflet-div-icon1', 'hide');
 
         return module.exports.manageRealtime.pushToCurrRoutes(
             routeId,
-            i.toString() // i here matches the route direction and is always 1 or 0
+            i.toString(), // i here matches the route direction and is always 1 or 0
+            agencyId
         );
     }).fail(function (msg) {
         console.log('Request returned with error msg:' + msg);

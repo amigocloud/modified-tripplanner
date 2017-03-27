@@ -74,6 +74,7 @@ if (config.map_provider() === 'AmigoCloud') {
 
 module.exports.getRealtimeVehicles = function (validVehicles) {
   var currRoutes = module.exports.currRoutes,
+      agencyForRoute = module.exports.agencyForRoute,
       requests = [],
       endpoint = '/api/transitime/vehiclesDetails';
 
@@ -82,14 +83,14 @@ module.exports.getRealtimeVehicles = function (validVehicles) {
     // key: routeId, value: direction of travel (1 or 0)
     requests.push($.get(endpoint, {
       r: routeId,
-      format: 'json'
+      format: 'json',
+      agency: agencyForRoute[routeId]
     }).then(function (data) {
       // find vehicles in route heading direction that matches legs in currRoutes
       var vehicle = {};
-
       for (var j = 0; j < data.vehicles.length; j++) {
         vehicle = data.vehicles[j];
-        if (vehicle.direction === currRoutes[vehicle.routeId]) {
+        if (vehicle.direction === currRoutes[vehicle.routeShortName]) {
           validVehicles.push(vehicle);
         }
       }
@@ -250,6 +251,7 @@ module.exports.hasVehicleMoved = function (oldPoint, newPoint) {
 
 module.exports.addPoint = function (map, point) {
   var routeId = point.routeId,
+      routeShortName = point.routeShortName,
       iconUrl = 'assets/images/graphics/',
       line, newPoint;
 
@@ -279,7 +281,7 @@ module.exports.addPoint = function (map, point) {
     iconAnchor: [20, 45],
     popupAnchor:  [0, -50],
     className: 'tint',
-    number: routeId
+    number: routeShortName
   }));
 
   newPoint.marker.realtimeData = point;
@@ -311,6 +313,7 @@ module.exports.addPoint = function (map, point) {
 
 module.exports.movePoint = function (map, point) {
   var routeId = point.routeId,
+      routeShortName = point.routeShortName,
       iconUrl = 'assets/images/graphics/',
       line, currentPoint;
 
@@ -333,7 +336,7 @@ module.exports.movePoint = function (map, point) {
     iconAnchor: [20, 45],
     popupAnchor:  [0, -50],
     className: 'tint',
-    number: routeId
+    number: routeShortName
   }));
 
   currentPoint.marker.realtimeData = point;
@@ -358,8 +361,8 @@ module.exports.makePopup = function (point) {
   }
 
   var string = '<div class="bus-popup"><div class="popup-header">';
-  string += '<h5><i class="fa fa-bus"></i> ' + point.routeId + ': ';
-  string += '<a target="_blank" href="http://www.vta.org/routes/rt' + point.routeId + '">';
+  string += '<h5><i class="fa fa-bus"></i> ' + point.routeShortName + ': ';
+  // string += '<a target="_blank" href="http://www.vta.org/routes/rt' + point.routeId + '">';
   string += routeName + '</a></h5></div>';
 
   string += '<div class="popup-body"><table>';
