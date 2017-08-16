@@ -1,3 +1,13 @@
+# Dependencies
+- [Node.JS](https://nodejs.org) 
+- [NPM](https://www.npmjs.com/) 
+- [MongoDB](https://www.mongodb.com/)
+- [Modified-reipplanner](https://github.com/amigocloud/modified-tripplanner)
+- [Tripplanner docker](https://github.com/amigocloud/tripplanner-docker)
+- [Open Trip Planner](http://www.opentripplanner.org/)
+- [GTFS Manager](https://github.com/amigocloud/gtfs-manager)
+- [Nginx](https://nginx.org/en/)
+
 # Deployment
 
 The easiest way to deploy **modified-tripplanner** is to use [Docker](https://www.docker.com/).
