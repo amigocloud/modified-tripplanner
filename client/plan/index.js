@@ -209,20 +209,24 @@ Plan.prototype.setAddress = function(name, address, callback, extra) {
   var c = null;
   var places_id = null;
   var physical_addr = null;
+  console.log('setAddress:' + address);
   if (address instanceof Object){
+    console.log('address instanceof Object');
+    console.log(Object(address));
     physical_addr = address['physical_addr'] || null
     places_id = address['places_id'] || null
-    c = (address['ll'] || '').split(',')
+    c = (physical_addr || '').split(',')
   } else {
     c = address.split(',');
   }
+  console.log('c: '+c);
   
   isCoordinate = c.length === 2 && !isNaN(parseFloat(c[0])) && !isNaN(parseFloat(c[1]));
 
   if (!address || address.length < 1) return callback();
 
   if (isCoordinate) {
-    var callbackAmigo = function (err, reverse) {
+    var callbackGoogle = function (err, reverse) {
       var changes = {};
       if (reverse) {
         var geocode_features = reverse.features;
@@ -258,22 +262,23 @@ Plan.prototype.setAddress = function(name, address, callback, extra) {
         }
       }
     };
-    geocode.reverseAmigo(c, callbackAmigo);
+    geocode.reverseGoogle(c, callbackGoogle);
   } else if (places_id !== null){
     // it's already got the placesId, so just do the lookup
     // this happens when the user clicks on one of the suggestions
     // or hits enter in the from/to textbox
     console.log('Looking up the Google Places details for place_id='+places_id+'')
-    var cb_amigo_placesid =  function(err, place){ 
+    var cb_google_places =  function(err, place){
       console.log('Places ID callback', place)
       if (place){
+        console.log(Object(place));
         var lat_lng = place.geometry.location.lat()+','+place.geometry.location.lng();
         var changes = {};
-        if (place['types'][0] === "street_address"){
+        // if (place['types'][0] === "street_address" || place['types'][0] === "route" || place['types'][0] === "establishment"){
           changes[name] = place['formatted_address'];
-        } else {
-          changes[name] = place['name'] + ', ' + place['formatted_address'];
-        }
+        // } else {
+        //   changes[name] = place['name'] + ', ' + place['formatted_address'];
+        // }
         changes[name + '_ll'] = {lat: parseFloat(place.geometry.location.lat()), lng: parseFloat(place.geometry.location.lng())};
         changes[name + '_id'] = place.place_id;
         changes[name + '_valid'] = true;
@@ -284,7 +289,7 @@ Plan.prototype.setAddress = function(name, address, callback, extra) {
         plan.setAddress('', '', callback);
       }
     }
-    geocode.lookupPlaceId(places_id, cb_amigo_placesid);
+    geocode.lookupPlaceId(places_id, cb_google_places);
   } else {
     // it's whole or part of a physical address/place name
     // this happens when opening a link to Trip Planner which has addresses already in place
@@ -292,7 +297,7 @@ Plan.prototype.setAddress = function(name, address, callback, extra) {
 
     // this works, but gives partially incomplete results sometimes.
     // seems it's better to use the first result of the autocomplete
-    //var cb_amigo =  function(err, suggestions){ 
+    //var cb_Google =  function(err, suggestions){
     //  if (suggestions && suggestions.length > 0){
     //    var changes = {};
     //    changes[name + '_ll'] = {lat: suggestions[0].geometry.location.lat, lng: suggestions[0].geometry.location.lng};
@@ -305,7 +310,7 @@ Plan.prototype.setAddress = function(name, address, callback, extra) {
     //    plan.setAddress('', '', callback);
     //  }
     //}
-    //geocode.geocode(address, cb_amigo);
+    //geocode.geocode(address, cb_Google);
 
     var autocompleteCallback = function(err, suggestions, query_text) {
       console.log('autocompleteCallback', err, suggestions, query_text)
@@ -322,7 +327,7 @@ Plan.prototype.setAddress = function(name, address, callback, extra) {
         }
       }
     }
-    geocode.suggestAmigo(address, autocompleteCallback);
+    geocode.suggestGoogle(address, autocompleteCallback);
   }
 };
 

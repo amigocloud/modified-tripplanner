@@ -29,11 +29,6 @@
   bottom: 0;
 }
 
-.MapView {
-  height: 100%;
-  width: 100%;
-}
-
 @media (--narrow-window) {
   .fullscreen {
     padding-left: 0;
@@ -90,7 +85,7 @@
 
   .MapView {
     height: 280px;
-    width: 100%;
+    /*width: 100%;*/
     margin-top: 70px;
   }
 }
